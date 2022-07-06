@@ -5,14 +5,21 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 
 class LoginActivity : AppCompatActivity() {
+
+    //lateinit var fileHandler: FileHandler
+    lateinit var fileHandlerEncripted: FileHandler
     lateinit var editTextEmail: EditText
     lateinit var editTextPassword:EditText
     lateinit var buttonLogin: Button
     lateinit var buttonNewUser:Button
     lateinit var mediaPlayer: MediaPlayer
+    lateinit var checkBoxRememberMe: CheckBox
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -21,6 +28,13 @@ class LoginActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.editTextPassword)
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonNewUser = findViewById(R.id.buttonNewUser)
+
+        //fileHandler = SharedPreferencesManager(this)
+        fileHandlerEncripted = EncriptedSharedPreferenceManager(this)
+        checkBoxRememberMe = findViewById(R.id.checkBoxRecordarme)
+
+        LeerDatosPreferencias()
+
         //Eventos clic
         buttonLogin.setOnClickListener {
             val email = editTextEmail.text.toString()
@@ -28,6 +42,10 @@ class LoginActivity : AppCompatActivity() {
             //Validaciones de datos requeridos y formatos
             if(!ValidarDatosRequeridos())
                 return@setOnClickListener
+
+            //guardamos datos en preferencias
+            GuardarDatosEnPreferencias()
+
             //Si pasa validación de datos requeridos, ir a pantalla principal
             val intencion = Intent(this, MainActivity::class.java)
             intencion.putExtra(EXTRA_LOGIN, email)
@@ -38,6 +56,28 @@ class LoginActivity : AppCompatActivity() {
         }
         mediaPlayer=MediaPlayer.create(this, R.raw.title_screen)
         mediaPlayer.start()
+    }
+
+    private fun GuardarDatosEnPreferencias(){
+        val email = editTextEmail.text.toString()
+        val clave = editTextPassword.text.toString()
+        val listadoAGrabar:Pair<String,String>
+
+        if(checkBoxRememberMe.isChecked){
+            listadoAGrabar = email to clave
+        }else{
+            listadoAGrabar = "" to ""
+        }
+        fileHandlerEncripted.saveInformation(listadoAGrabar)
+    }
+
+    private fun LeerDatosPreferencias(){
+        val listadoLeido = fileHandlerEncripted.readInformation()
+        if(listadoLeido.first != null){
+            checkBoxRememberMe.isChecked = true
+        }
+        editTextEmail.setText(listadoLeido.first)
+        editTextPassword.setText(listadoLeido.second)
     }
 
     private fun ValidarDatosRequeridos():Boolean{
