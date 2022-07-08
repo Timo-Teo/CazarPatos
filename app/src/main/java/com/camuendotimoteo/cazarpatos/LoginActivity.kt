@@ -4,6 +4,8 @@ import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -50,12 +52,22 @@ class LoginActivity : AppCompatActivity() {
             val intencion = Intent(this, MainActivity::class.java)
             intencion.putExtra(EXTRA_LOGIN, email)
             startActivity(intencion)
+
+            Log.d("TAG", Environment.getExternalStorageDirectory().toString())
+            Log.d("TAG", this.getExternalFilesDir(null).toString())
+
+            FileExternalManager(this).saveInformation(email to clave)
+            println(FileExternalManager(this).readInformation())
         }
         buttonNewUser.setOnClickListener{
 
         }
         mediaPlayer=MediaPlayer.create(this, R.raw.title_screen)
         mediaPlayer.start()
+
+
+
+
     }
 
     private fun GuardarDatosEnPreferencias(){
