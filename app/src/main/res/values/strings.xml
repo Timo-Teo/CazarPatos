@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CazarPatos</string>
+    <string name="name">Name</string>
+    <string name="nuevo_juego">Nuevo Juego</string>
+    <string name="jugar_online">Jugar Online</string>
+    <string name="salir">Salir</string>
 </resources>

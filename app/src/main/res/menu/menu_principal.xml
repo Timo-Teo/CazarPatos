@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/nuevo_juego"
+        android:id="@+id/action_nuevo_juego"/>
+    <item android:title="@string/jugar_online"
+        android:id="@+id/action_jugar_online"/>
+    <item android:title="@string/salir"
+        android:id="@+id/action_salir"/>
+</menu>

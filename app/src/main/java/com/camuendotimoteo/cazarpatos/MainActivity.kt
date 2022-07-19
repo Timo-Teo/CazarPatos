@@ -1,20 +1,26 @@
 package com.camuendotimoteo.cazarpatos
 
+import android.content.Intent
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import java.util.*
-import android.os.CountDownTimer
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var textViewUsuario: TextView
     lateinit var textViewContador: TextView
     lateinit var textViewTiempo: TextView
     lateinit var imageViewPato: ImageView
+    lateinit var imageBack: ImageView
     var contador = 0
     var anchoPantalla = 0
     var alturaPantalla = 0
@@ -28,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         textViewContador = findViewById(R.id.textViewContador)
         textViewTiempo = findViewById(R.id.textViewTiempo)
         imageViewPato = findViewById(R.id.imageViewPato)
+        imageBack = findViewById(R.id.imageViewBack)
 
         //Obtener el usuario de pantalla login
         val extras = intent.extras ?: return
@@ -55,11 +62,49 @@ class MainActivity : AppCompatActivity() {
             }, 500)
 
         }
+
+        imageBack.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent);
+        }
+
+
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_principal,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_nuevo_juego -> {
+                Toast.makeText(this,"Nuevo Juego",Toast.LENGTH_LONG).show()
+                reiniciarJuego()
+                true
+            }
+            R.id.action_jugar_online -> {
+                Toast.makeText(this,"Bye",Toast.LENGTH_LONG).show()
+                val uriUrl: Uri = Uri.parse("https://duckhuntjs.com/")
+                val launchBrowser = Intent(Intent.ACTION_VIEW, uriUrl)
+                startActivity(launchBrowser)
+                true
+            }
+            R.id.action_salir-> {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent);
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+
+}
 
 
-    private fun moverPato() {
+
+
+private fun moverPato() {
         val min = imageViewPato.getWidth()/2
         val maximoX = anchoPantalla - imageViewPato.getWidth()
         val maximoY = alturaPantalla - imageViewPato.getHeight()
@@ -97,6 +142,7 @@ class MainActivity : AppCompatActivity() {
     private fun mostrarDialogoGameOver() {
         val builder = AlertDialog.Builder(this)
         builder
+            .setIcon(R.drawable.ic_baseline_info_24)
             .setMessage("Felicidades!!\nHas conseguido cazar $contador patos")
             .setTitle("Fin del juego")
             .setPositiveButton("Reiniciar",
@@ -108,6 +154,8 @@ class MainActivity : AppCompatActivity() {
                     //dialog.dismiss()
                 })
         builder.create().show()
+
+
     }
     fun reiniciarJuego(){
         contador = 0

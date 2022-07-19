@@ -9,6 +9,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
 
@@ -41,16 +44,17 @@ class LoginActivity : AppCompatActivity() {
         buttonLogin.setOnClickListener {
             val email = editTextEmail.text.toString()
             val clave = editTextPassword.text.toString()
+            var name: String
             //Validaciones de datos requeridos y formatos
             if(!ValidarDatosRequeridos())
                 return@setOnClickListener
 
             //guardamos datos en preferencias
             GuardarDatosEnPreferencias()
-
+            name = nombreRecortado(email)
             //Si pasa validación de datos requeridos, ir a pantalla principal
             val intencion = Intent(this, MainActivity::class.java)
-            intencion.putExtra(EXTRA_LOGIN, email)
+            intencion.putExtra(EXTRA_LOGIN, name)
             startActivity(intencion)
 
             Log.d("TAG", Environment.getExternalStorageDirectory().toString())
@@ -72,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun GuardarDatosEnPreferencias(){
         val email = editTextEmail.text.toString()
+
         val clave = editTextPassword.text.toString()
         val listadoAGrabar:Pair<String,String>
 
@@ -105,13 +110,34 @@ class LoginActivity : AppCompatActivity() {
             editTextPassword.requestFocus()
             return false
         }
-        if (clave.length < 3) {
-            editTextPassword.setError("La clave debe tener al menos 3 caracteres")
+        if (clave.length < 8) {
+            editTextPassword.setError("La clave debe tener al menos 8 caracteres")
             editTextPassword.requestFocus()
             return false
         }
+        if(!esCorreo(email)){
+            editTextEmail.setError("El email es incorrecto")
+            editTextEmail.requestFocus()
+            return false
+        }
+
         return true
     }
+
+    fun esCorreo(texto:String):Boolean {
+        var patron: Pattern =
+            Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+        var comparador: Matcher = patron.matcher(texto)
+        return comparador.find()
+    }
+
+    fun nombreRecortado(texto: String): String{
+        var name: String
+        var index = texto.indexOf("@")
+        name = texto.substring(0,index)
+        return name
+    }
+
     override fun onDestroy() {
         mediaPlayer.release()
         super.onDestroy()
