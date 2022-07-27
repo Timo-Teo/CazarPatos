@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "52216645282",
+    "project_id": "proyectocazarpatos-9253c",
+    "storage_bucket": "proyectocazarpatos-9253c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52216645282:android:18d0b1f94085846d01f9fb",
+        "android_client_info": {
+          "package_name": "com.camuendotimoteo.cazarpatos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52216645282-s19c6qsshlvvct64dbj17r6ikt6g5hvf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP8XU37pn-EUI5UXrIkpGKCzgUtaQVvRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52216645282-s19c6qsshlvvct64dbj17r6ikt6g5hvf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
