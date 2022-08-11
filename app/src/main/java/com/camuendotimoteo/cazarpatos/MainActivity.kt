@@ -14,6 +14,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -38,6 +41,12 @@ class MainActivity : AppCompatActivity() {
         textViewTiempo = findViewById(R.id.textViewTiempo)
         imageViewPato = findViewById(R.id.imageViewPato)
         imageBack = findViewById(R.id.imageViewBack)
+
+        MobileAds.initialize(this) {}
+
+        var mAdView = findViewById<AdView>(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         //Obtener el usuario de pantalla login
         val extras = intent.extras ?: return
